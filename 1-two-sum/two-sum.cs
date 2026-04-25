@@ -6,9 +6,7 @@ public class Solution {
         
         for (int i = 0; i < nums.Length; i++) {
             int complement = target - nums[i];
-            
-            // If we have already seen the complement, we found our pair.
-            if (seen.ContainsKey(complement)) {
+                if (seen.ContainsKey(complement)) {
                 return new int[] { seen[complement], i };
             }
             seen[nums[i]] = i;
