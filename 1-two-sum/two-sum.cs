@@ -1,28 +1,32 @@
 using System;
-using System.Collections.Generic;
 
 public class Solution {
     public int[] TwoSum(int[] nums, int target) {
-        int count = nums.Length;
-        // Pre-allocating capacity avoids the cost of resizing the hash table
-        var seen = new Dictionary<int, int>(count);
+        int n = nums.Length;
+        // Tạo một mảng lưu index để không bị mất dấu sau khi sort
+        int[] indices = new int[n];
+        for (int i = 0; i < n; i++) indices[i] = i;
 
-        for (int i = 0; i < count; i++) {
-            int currentNum = nums[i];
-            int complement = target - currentNum;
+        // Sort mảng nums và mảng indices song song dựa trên giá trị của nums
+        Array.Sort(nums, indices);
 
-            // TryGetValue is a single-pass lookup (O(1))
-            if (seen.TryGetValue(complement, out int index)) {
-                return new int[] { index, i };
+        int left = 0;
+        int right = n - 1;
+
+        while (left < right) {
+            int sum = nums[left] + nums[right];
+
+            if (sum == target) {
+                return new int[] { indices[left], indices[right] };
             }
-
-            // Using the indexer here is safe because the problem 
-            // guarantees only one solution exists.
-            if (!seen.ContainsKey(currentNum)) {
-                seen.Add(currentNum, i);
+            else if (sum < target) {
+                left++; // Cần tăng tổng lên
+            }
+            else {
+                right--; // Cần giảm tổng xuống
             }
         }
 
-        return Array.Empty<int>();
+        return new int[0];
     }
 }
