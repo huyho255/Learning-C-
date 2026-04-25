@@ -1,25 +1,28 @@
+using System;
+using System.Collections.Generic;
+
 public class Solution {
     public int[] TwoSum(int[] nums, int target) {
-        // Key: the number, Value: its index
-        Dictionary<int, int> seenNumbers = new Dictionary<int, int>();
+        int count = nums.Length;
+        // Pre-allocating capacity avoids the cost of resizing the hash table
+        var seen = new Dictionary<int, int>(count);
 
-        for (int i = 0; i < nums.Length; i++) {
-            int complement = target - nums[i];
+        for (int i = 0; i < count; i++) {
+            int currentNum = nums[i];
+            int complement = target - currentNum;
 
-            // If the complement is in the dictionary, we found our pair
-            if (seenNumbers.ContainsKey(complement)) {
-                return new int[] { seenNumbers[complement], i };
+            // TryGetValue is a single-pass lookup (O(1))
+            if (seen.TryGetValue(complement, out int index)) {
+                return new int[] { index, i };
             }
 
-            // Otherwise, add the current number and its index to the dictionary
-            // We use TryAdd or check ContainsKey to handle potential duplicate values 
-            // (though the problem guarantees exactly one solution).
-            if (!seenNumbers.ContainsKey(nums[i])) {
-                seenNumbers.Add(nums[i], i);
+            // Using the indexer here is safe because the problem 
+            // guarantees only one solution exists.
+            if (!seen.ContainsKey(currentNum)) {
+                seen.Add(currentNum, i);
             }
         }
 
-        // Return an empty array if no solution is found (per constraints, this won't happen)
-        return new int[0];
+        return Array.Empty<int>();
     }
 }
