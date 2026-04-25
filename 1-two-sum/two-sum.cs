@@ -1,16 +1,27 @@
+using System.Collections.Generic;
+
 public class Solution {
-public int[] TwoSum(int[] nums, int target)
-{
-    for(int i = 0; i < nums.Length; i++) 
-        {
-            for(int j = i + 1; j < nums.Length; j++) 
-            {
-                if(nums[i] + nums[j] == target)
-                    return [i, j];
-                if(nums[j] + nums[j - 1] == target)
-                    return [j - 1, j];
+    public int[] TwoSum(int[] nums, int target) {
+        // Dictionary to store the number we've seen as the key, 
+        // and its index as the value.
+        Dictionary<int, int> seen = new Dictionary<int, int>();
+        
+        for (int i = 0; i < nums.Length; i++) {
+            int complement = target - nums[i];
+            
+            // If we have already seen the complement, we found our pair.
+            if (seen.ContainsKey(complement)) {
+                return new int[] { seen[complement], i };
             }
+            
+            // Otherwise, add the current number and its index to the dictionary.
+            // Using the indexer [] handles potential duplicate values safely 
+            // by updating the index to the most recent one.
+            seen[nums[i]] = i;
         }
-        return [];
+        
+        // The problem states there is exactly one valid solution, 
+        // so we will always return inside the loop.
+        return new int[0];
     }
 }
